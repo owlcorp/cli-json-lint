@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+use OwlCorp\CliJsonLint\Command\LintJsonCommand;
+use Symfony\Component\Console\Application;
+
+function requireIfExists(string $path): bool
+{
+    return is_readable($path) && require $path;
+}
+
+if (PHP_SAPI !== 'cli') {
+    throw new RuntimeException('This script is meant to be using in CLI only (running ' . \PHP_SAPI . ')');
+}
+
+if (!requireIfExists(__DIR__ . '/../vendor/autoload.php') && !requireIfExists(__DIR__ . '/../../../autoload.php')) {
+    throw new RuntimeException('You must install dependencies using composer');
+}
+
+(new Application())
+    ->add($command = new LintJsonCommand())
+    ->getApplication()
+    ->setDefaultCommand($command->getName(), true)
+    ->run();
