@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 <ruleset name="Lab Companion" namespace="OwlCorp\CliJsonLint\CS\Standard">
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
+    <config name="ignore_warnings_on_exit" value="1"/>
     <ini name="memory_limit" value="512M"/>
     <arg name="colors"/>
     <arg name="basepath" value="."/>
     <arg name="parallel" value="8" />
+    <arg value="s"/> <!-- always show sniff names -->
 
     <autoload>./vendor/autoload.php</autoload>
     <file>src</file>
@@ -19,7 +21,10 @@
     <!-- ############################################################################ -->
     <!--                            PHPCS built-in rules                              -->
     <!-- ############################################################################ -->
-    <rule ref="Generic.Files.LineLength.TooLong" />
+    <rule ref="Generic.Files.LineLength.TooLong">
+        <!-- long typedefs -->
+        <exclude-pattern>src/DTO/LintResult\.php</exclude-pattern>
+    </rule>
     <rule ref="Generic.PHP.ForbiddenFunctions">
         <properties>
             <property name="forbiddenFunctions" type="array">
@@ -79,9 +84,7 @@
     </rule>
 
     <!-- Docs: https://github.com/slevomat/coding-standard/blob/master/doc/classes.md  -->
-    <rule ref="SlevomatCodingStandard.Classes.ClassLength">
-        <exclude-pattern>src/DataFixture/GeneratorProvider/</exclude-pattern>
-    </rule>
+    <rule ref="SlevomatCodingStandard.Classes.ClassLength" />
     <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility" />
     <rule ref="SlevomatCodingStandard.Classes.ClassMemberSpacing">
         <properties>
@@ -189,7 +192,11 @@
 
 
     <!-- Docs: https://github.com/slevomat/coding-standard/blob/master/doc/complexity.md -->
-    <rule ref="SlevomatCodingStandard.Complexity.Cognitive" />
+    <rule ref="SlevomatCodingStandard.Complexity.Cognitive">
+        <properties>
+            <property name="errorThreshold" value="10" />
+        </properties>
+    </rule>
 
 
     <!-- Docs: https://github.com/slevomat/coding-standard/blob/master/doc/control-structures.md -->
@@ -220,9 +227,7 @@
 
 
     <!-- Docs: https://github.com/slevomat/coding-standard/blob/master/doc/files.md -->
-    <rule ref="SlevomatCodingStandard.Files.FileLength">
-        <exclude-pattern>src/DataFixture/GeneratorProvider/</exclude-pattern>
-    </rule>
+    <rule ref="SlevomatCodingStandard.Files.FileLength" />
     <rule ref="SlevomatCodingStandard.Files.LineLength">
         <properties>
             <property name="lineLengthLimit" value="120" />
@@ -336,7 +341,10 @@
 
     <!-- Docs: https://github.com/slevomat/coding-standard/blob/master/doc/php.md -->
     <rule ref="SlevomatCodingStandard.PHP.DisallowDirectMagicInvokeCall" /> <!-- no magic methods should be called directly... -->
-    <rule ref="SlevomatCodingStandard.PHP.DisallowReference" /> <!-- objects should be used instead when such behavior is desired -->
+    <rule ref="SlevomatCodingStandard.PHP.DisallowReference"> <!-- objects should be used instead when such behavior is desired -->
+        <exclude-pattern>tests/*</exclude-pattern> <!-- with withConsecutive() removal some trickery is needed -->
+        <exclude-pattern>src/Command/LintJsonCommand\.php</exclude-pattern> <!-- @phpcsSuppress doesn't work there?! -->
+    </rule>
     <rule ref="SlevomatCodingStandard.PHP.OptimizedFunctionsWithoutUnpacking" />
     <rule ref="SlevomatCodingStandard.PHP.ShortList" />
     <rule ref="SlevomatCodingStandard.PHP.TypeCast" />
@@ -357,6 +365,8 @@
     <rule ref="SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition" />
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue" />
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <!-- vendor dep -->
+        <exclude-pattern>src/CliJsonLintBundle\.php</exclude-pattern>
         <properties>
             <property name="enableObjectTypeHint" value="true" />
         </properties>

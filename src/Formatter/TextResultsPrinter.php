@@ -11,24 +11,35 @@ final class TextResultsPrinter implements ResultsPrinter
 {
     public function printResults(LintResultCollection $results, SymfonyStyle $io): void
     {
-        $printErrDetails = $io->isVerbose();
-        $printNonErr = $io->isVeryVerbose();
+        $this->printIndividualResults($results, $io->isVerbose(), $io->isVeryVerbose(), $io);
+        $this->printSummary($results, $io);
+    }
 
+    private function printIndividualResults(
+        LintResultCollection $results,
+        bool $printDetails,
+        bool $printSuccess,
+        SymfonyStyle $io
+    ): void {
         $errors = $results->countErrors();
         $e = 0;
         foreach ($results as $result) {
             if ($result->error !== null) {
                 $error = \sprintf('Error %d of %d: JSON %s is invalid', ++$e, $errors, $this->resolveFile($result));
-                if ($printErrDetails) {
+                if ($printDetails) {
                     $error .= "\n\n" . $result->error->getMessage();
                 }
                 $io->block($error, null, 'fg=white;bg=red', ' ', true);
-            } elseif ($printNonErr) {
+            } elseif ($printSuccess) {
                 $io->comment(\sprintf('<info>JSON %s is valid</info>', $this->resolveFile($result)));
             }
         }
+    }
 
+    private function printSummary(LintResultCollection $results, SymfonyStyle $io): void
+    {
         $parsed = $results->count();
+        $errors = $results->countErrors();
         if ($parsed === 0) {
             $io->warning('No files were parsed.');
         } elseif ($errors === $parsed) {

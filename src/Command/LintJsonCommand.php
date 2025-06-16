@@ -25,8 +25,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class LintJsonCommand extends Command
 {
     public const STDIN_PSEUDOFILE = 'php://stdin';
-
-    /** @var array<string, class-string<ResultsPrinter>> */
     private const RESULT_PRINTERS = [
         'text' => TextResultsPrinter::class,
         'json' => JsonPrinter::class,
@@ -161,7 +159,7 @@ final class LintJsonCommand extends Command
     /**
      * @param array<string>        $excludes
      * @param array<string>        $extensions
-     * @param array<string, true> $seen
+     * @param array<string, true> &$seen
      *
      * @return iterable<string, \SplFileInfo>
      */

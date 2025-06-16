@@ -10,6 +10,9 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class CliJsonLintBundle extends AbstractBundle
 {
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $container->services()

@@ -35,10 +35,10 @@
   ],
   "scripts": {
     "phpcs": "vendor/bin/phpcs --standard=phpcs.xml.dist --cache=.tools/PHP_CodeSniffer/phpcs.cache",
-    "phpstan": "vendor/bin/phpstan -c phpstan.src.neon",
+    "phpstan": "vendor/bin/phpstan analyze -c phpstan.src.neon",
     "check-code-quality": [
       "@phpcs -s --extensions=php ./src",
-      "@phpstan analyse src -c phpstan.src.neon"
+      "@phpstan src -c phpstan.src.neon"
     ],
     "fix-cs": [
       "vendor/bin/phpcbf --standard=phpcs.xml.dist  --cache=.tools/PHP_CodeSniffer/phpcs.cache"
