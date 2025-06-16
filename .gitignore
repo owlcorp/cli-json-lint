@@ -1,0 +1,12 @@
+vendor/
+composer.lock
+phpunit.xml
+phpstan.neon
+.php-cs-fixer.cache
+.php-cs-fixer.php
+.phpunit.result.cache
+composer.phar
+/.phpunit
+/tests
+/.tools/PHP_CodeSniffer
+/.tools/PHPStan/Cache

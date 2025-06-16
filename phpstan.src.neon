@@ -1,0 +1,29 @@
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    level: 7
+    tmpDir: .tools/PHPStan/Cache
+    parallel:
+        jobSize: 20
+        maximumNumberOfProcesses: 16
+        minimumNumberOfJobsPerProcess: 2
+        processTimeout: 30.0
+
+    tipsOfTheDay: false
+    polluteScopeWithLoopInitialAssignments: false
+    polluteScopeWithAlwaysIterableForeach: false
+    checkExplicitMixedMissingReturn: true
+    checkFunctionNameCase: true
+    reportMaybesInMethodSignatures: true
+    reportStaticMethodSignatures: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    treatPhpDocTypesAsCertain: false
+
+    ignoreErrors:
+        # vendor
+        -
+            message: '#no value type specified in iterable type array#'
+            path: src/CliJsonLintBundle.php
+            reportUnmatched: false
