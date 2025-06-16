@@ -5,5 +5,4 @@ namespace OwlCorp\CliJsonLint\Exception;
 
 final class IOError extends RuntimeException
 {
-
 }

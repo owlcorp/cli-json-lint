@@ -31,9 +31,9 @@ final class TextResultsPrinter implements ResultsPrinter
         $parsed = $results->count();
         if ($parsed === 0) {
             $io->warning('No files were parsed.');
-        } elseif($errors === $parsed) {
+        } elseif ($errors === $parsed) {
             $io->error(\sprintf('All %d JSON files contained syntax errors.', $errors));
-        } elseif($errors > 0) {
+        } elseif ($errors > 0) {
             $io->error(\sprintf('%d of %d JSON files contained syntax errors.', $errors, $parsed));
         } else {
             $io->success(\sprintf('All %d JSON files are valid.', $parsed));
@@ -42,7 +42,7 @@ final class TextResultsPrinter implements ResultsPrinter
 
     private function resolveFile(LintResult $result): string
     {
-        $path = ($result->isFromStdIn()) ? 'read from STDIN' : "in $result->filePath file";
+        $path = $result->isFromStdIn() ? 'read from STDIN' : "in $result->filePath file";
         if ($path !== $result->sourcePath) {
             $path .= ' (resolved from "' . $result->sourcePath . '")';
         }

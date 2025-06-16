@@ -7,7 +7,7 @@ use OwlCorp\CliJsonLint\Command\LintJsonCommand;
 use Seld\JsonLint\ParsingException;
 
 /**
- * @phpstan-type ErrorDetails array{text?: string, token?: string|int, line?: int, loc?: array{first_line: int, first_column: int, last_line: int, last_column: int}, expected?: string[]}
+ * @phpstan-type ErrorDetails array{text?: string, token?: string|int, line?: int, loc?: array{first_line: int, first_column: int, last_line: int, last_column: int}, expected?: array<string>}
  * @phpstan-type ErrorResult array{file: string|null, valid: bool, source?: string, error?: ErrorDetails}
  */
 final class LintResult
@@ -15,7 +15,7 @@ final class LintResult
     public function __construct(
         public readonly string $sourcePath,
         public readonly string $filePath,
-        public readonly ?ParsingException $error,
+        public readonly ?ParsingException $error
     ) {
     }
 
@@ -25,8 +25,6 @@ final class LintResult
     }
 
     /**
-     * @param bool $includeDetails
-     *
      * @return ErrorResult
      */
     public function asArray(bool $includeDetails = false): array

@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace OwlCorp\CliJsonLint\Command;
 
+use OwlCorp\CliJsonLint\DTO\LintResult;
+use OwlCorp\CliJsonLint\DTO\LintResultCollection;
 use OwlCorp\CliJsonLint\Exception\IOError;
 use OwlCorp\CliJsonLint\Exception\RuntimeException;
 use OwlCorp\CliJsonLint\Exception\ValueError;
 use OwlCorp\CliJsonLint\Formatter\JsonPrinter;
-use OwlCorp\CliJsonLint\Formatter\MultiJsonPrinter;
 use OwlCorp\CliJsonLint\Formatter\ListPrinter;
-use OwlCorp\CliJsonLint\Formatter\ResultsPrinter;
+use OwlCorp\CliJsonLint\Formatter\MultiJsonPrinter;
 use OwlCorp\CliJsonLint\Formatter\TextResultsPrinter;
-use OwlCorp\CliJsonLint\DTO\LintResult;
-use OwlCorp\CliJsonLint\DTO\LintResultCollection;
 use Seld\JsonLint\JsonParser;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -38,12 +37,12 @@ final class LintJsonCommand extends Command
     protected function configure(): void
     {
         $this->addOption(
-                'format',
-                'o',
-                InputOption::VALUE_REQUIRED,
-                \sprintf('Print format (one of "%s")', \implode('", "', \array_keys(self::RESULT_PRINTERS))),
-                'text'
-            )
+            'format',
+            'o',
+            InputOption::VALUE_REQUIRED,
+            \sprintf('Print format (one of "%s")', \implode('", "', \array_keys(self::RESULT_PRINTERS))),
+            'text'
+        )
             //--only-errors & --no-errors
              ->addOption(
                  'exclude',
@@ -68,10 +67,10 @@ final class LintJsonCommand extends Command
                 ['json']
             )
             ->addArgument(
-            'source',
-                 InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-                 'Path(s) to file, directory, or glob() pattern(s). Use "-" for STDIN.'
-             );
+                'source',
+                InputArgument::REQUIRED | InputArgument::IS_ARRAY,
+                'Path(s) to file, directory, or glob() pattern(s). Use "-" for STDIN.'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -95,7 +94,7 @@ final class LintJsonCommand extends Command
         $results = $this->processFiles(
             $this->getPathsMap($sources, $maxDepth, $exclude, $extensions),
             (bool)$input->getOption('stop-on-error'),
-            (bool)$input->getOption('realpath'),
+            (bool)$input->getOption('realpath')
         );
         (new (self::RESULT_PRINTERS[$format])())->printResults($results, new SymfonyStyle($input, $output));
 
@@ -166,15 +165,21 @@ final class LintJsonCommand extends Command
      *
      * @return iterable<string, \SplFileInfo>
      */
-    private function scanDirectory(string $source, \SplFileInfo $dirPath, int $recurseLimit, array $excludes, array $extensions, array &$seen = []): iterable
-    {
+    private function scanDirectory(
+        string $source,
+        \SplFileInfo $dirPath,
+        int $recurseLimit,
+        array $excludes,
+        array $extensions,
+        array &$seen = []
+    ): iterable {
         $rpath = $dirPath->getRealPath();
         if ($rpath === false || isset($seen[$rpath])) { //break loops & broken symlinks
             return;
         }
         $seen[$rpath] = true;
 
-        if (in_array($dirPath->getPathname(), $excludes, true)) {
+        if (\in_array($dirPath->getPathname(), $excludes, true)) {
             return;
         }
 
@@ -206,8 +211,7 @@ final class LintJsonCommand extends Command
      */
     private function normalizePaths(array $paths): array
     {
-        foreach ($paths as $key => $path)
-        {
+        foreach ($paths as $key => $path) {
             $paths[$key] = \rtrim($path, \PATH_SEPARATOR); //backslash is valid in path on e.g. macOS but not Windows
         }
 
@@ -239,5 +243,4 @@ final class LintJsonCommand extends Command
 
         return $results;
     }
-
 }

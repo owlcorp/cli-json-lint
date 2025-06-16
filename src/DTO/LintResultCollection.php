@@ -30,7 +30,7 @@ final class LintResultCollection implements \Countable, \IteratorAggregate
 
     public function count(): int
     {
-        return count($this->results);
+        return \count($this->results);
     }
 
     public function countErrors(): int
