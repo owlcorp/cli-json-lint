@@ -7,6 +7,5 @@ phpstan.neon
 .phpunit.result.cache
 composer.phar
 /.phpunit
-/tests
 /.tools/PHP_CodeSniffer
 /.tools/PHPStan/Cache
