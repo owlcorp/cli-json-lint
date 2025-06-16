@@ -1,15 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 namespace OwlCorp\CliJsonLint\Tests\Formatter;
 
-use OwlCorp\CliJsonLint\Formatter\TextResultsPrinter;
-use OwlCorp\CliJsonLint\DTO\LintResultCollection;
 use OwlCorp\CliJsonLint\DTO\LintResult;
+use OwlCorp\CliJsonLint\DTO\LintResultCollection;
+use OwlCorp\CliJsonLint\Formatter\TextResultsPrinter;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Seld\JsonLint\ParsingException;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class TextResultsPrinterTest extends TestCase
 {
@@ -21,7 +20,7 @@ final class TextResultsPrinterTest extends TestCase
         $io = $this->createMock(SymfonyStyle::class);
         $io->method('isVerbose')->willReturn(false);
         $io->method('isVeryVerbose')->willReturn(false);
-        $io->method('warning')->willReturnCallback(function(string $message) use (&$warnings) {
+        $io->method('warning')->willReturnCallback(static function (string $message) use (&$warnings): void {
             $warnings[] = $message;
         });
 
@@ -46,19 +45,19 @@ final class TextResultsPrinterTest extends TestCase
         $io = $this->createMock(SymfonyStyle::class);
         $io->method('isVerbose')->willReturn(false);
         $io->method('isVeryVerbose')->willReturn(false);
-        $io->method('success')->willReturnCallback(function(string $message) use (&$successes) {
+        $io->method('success')->willReturnCallback(static function (string $message) use (&$successes): void {
             $successes[] = $message;
         });
-        $io->method('comment')->willReturnCallback(function(string $message) use (&$comments) {
+        $io->method('comment')->willReturnCallback(static function (string $message) use (&$comments): void {
             $comments[] = $message;
         });
-        $io->method('block')->willReturnCallback(function(string $message) use (&$blocks) {
+        $io->method('block')->willReturnCallback(static function (string $message) use (&$blocks): void {
             $blocks[] = $message;
         });
-        $io->method('error')->willReturnCallback(function(string $message) use (&$errors) {
+        $io->method('error')->willReturnCallback(static function (string $message) use (&$errors): void {
             $errors[] = $message;
         });
-        $io->method('warning')->willReturnCallback(function(string $message) use (&$warnings) {
+        $io->method('warning')->willReturnCallback(static function (string $message) use (&$warnings): void {
             $warnings[] = $message;
         });
 
@@ -86,10 +85,10 @@ final class TextResultsPrinterTest extends TestCase
         $io = $this->createMock(SymfonyStyle::class);
         $io->method('isVerbose')->willReturn(false);
         $io->method('isVeryVerbose')->willReturn(true);
-        $io->method('comment')->willReturnCallback(function(string $message) use (&$comments) {
+        $io->method('comment')->willReturnCallback(static function (string $message) use (&$comments): void {
             $comments[] = $message;
         });
-        $io->method('success')->willReturnCallback(function(string $message) use (&$successes) {
+        $io->method('success')->willReturnCallback(static function (string $message) use (&$successes): void {
             $successes[] = $message;
         });
 
@@ -117,10 +116,10 @@ final class TextResultsPrinterTest extends TestCase
         $io = $this->createMock(SymfonyStyle::class);
         $io->method('isVerbose')->willReturn(false);
         $io->method('isVeryVerbose')->willReturn(false);
-        $io->method('block')->willReturnCallback(function(string $message) use (&$blocks) {
+        $io->method('block')->willReturnCallback(static function (string $message) use (&$blocks): void {
             $blocks[] = $message;
         });
-        $io->method('error')->willReturnCallback(function(string $message) use (&$errors) {
+        $io->method('error')->willReturnCallback(static function (string $message) use (&$errors): void {
             $errors[] = $message;
         });
 
@@ -146,10 +145,10 @@ final class TextResultsPrinterTest extends TestCase
         $io = $this->createMock(SymfonyStyle::class);
         $io->method('isVerbose')->willReturn(true);
         $io->method('isVeryVerbose')->willReturn(false);
-        $io->method('block')->willReturnCallback(function(string $message) use (&$blocks) {
+        $io->method('block')->willReturnCallback(static function (string $message) use (&$blocks): void {
             $blocks[] = $message;
         });
-        $io->method('error')->willReturnCallback(function(string $message) use (&$errors) {
+        $io->method('error')->willReturnCallback(static function (string $message) use (&$errors): void {
             $errors[] = $message;
         });
 

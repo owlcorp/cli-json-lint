@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace OwlCorp\CliJsonLint\Tests\Formatter;
 
-use OwlCorp\CliJsonLint\Formatter\ListPrinter;
-use OwlCorp\CliJsonLint\DTO\LintResultCollection;
 use OwlCorp\CliJsonLint\DTO\LintResult;
+use OwlCorp\CliJsonLint\DTO\LintResultCollection;
+use OwlCorp\CliJsonLint\Formatter\ListPrinter;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Seld\JsonLint\ParsingException;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class ListPrinterTest extends TestCase
 {
@@ -61,7 +61,7 @@ final class ListPrinterTest extends TestCase
         $io = $this->createMock(SymfonyStyle::class);
         $io->expects($this->exactly(2))
            ->method('writeln')
-           ->willReturnCallback(function(string $output) use (&$calls) {
+           ->willReturnCallback(static function (string $output) use (&$calls): void {
                $calls[] = $output;
            });
 

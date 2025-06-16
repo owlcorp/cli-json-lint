@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace OwlCorp\CliJsonLint\Tests\Exception;
 
-use PHPUnit\Framework\TestCase;
 use OwlCorp\CliJsonLint\Exception\RuntimeException;
+use PHPUnit\Framework\TestCase;
 
 class RuntimeExceptionTest extends TestCase
 {
-    public function testIsNativeRuntimeException()
+    public function testIsNativeRuntimeException(): void
     {
         $this->assertInstanceOf(\RuntimeException::class, new RuntimeException());
     }

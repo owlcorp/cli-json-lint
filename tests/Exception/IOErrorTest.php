@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class IOErrorTest extends TestCase
 {
-    public function testIsAppRuntimeException()
+    public function testIsAppRuntimeException(): void
     {
         $this->assertInstanceOf(RuntimeException::class, new IOError());
     }

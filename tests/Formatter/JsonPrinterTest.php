@@ -1,15 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 namespace OwlCorp\CliJsonLint\Tests\Formatter;
 
-use OwlCorp\CliJsonLint\Formatter\JsonPrinter;
-use OwlCorp\CliJsonLint\DTO\LintResultCollection;
 use OwlCorp\CliJsonLint\DTO\LintResult;
+use OwlCorp\CliJsonLint\DTO\LintResultCollection;
+use OwlCorp\CliJsonLint\Formatter\JsonPrinter;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Seld\JsonLint\ParsingException;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class JsonPrinterTest extends TestCase
 {
@@ -23,8 +22,8 @@ final class JsonPrinterTest extends TestCase
         $io->method('isVerbose')->willReturn(false);
         $io->expects($this->once())
            ->method('writeln')
-           ->with($this->callback(function(string $output) use ($collection): bool {
-               $expected = array_map(fn(LintResult $r) => $r->asArray(false), iterator_to_array($collection));
+           ->with($this->callback(static function (string $output) use ($collection): bool {
+               $expected = \array_map(static fn (LintResult $r) => $r->asArray(false), \iterator_to_array($collection));
                return $output === \json_encode($expected, \JSON_PRETTY_PRINT);
            }));
 
@@ -43,8 +42,8 @@ final class JsonPrinterTest extends TestCase
         $io->method('isVerbose')->willReturn(true);
         $io->expects($this->once())
            ->method('writeln')
-           ->with($this->callback(function(string $output) use ($collection): bool {
-               $expected = array_map(fn(LintResult $r) => $r->asArray(true), iterator_to_array($collection));
+           ->with($this->callback(static function (string $output) use ($collection): bool {
+               $expected = \array_map(static fn (LintResult $r) => $r->asArray(true), \iterator_to_array($collection));
                return $output === \json_encode($expected, \JSON_PRETTY_PRINT);
            }));
 

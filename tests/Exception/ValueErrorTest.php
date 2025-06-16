@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class ValueErrorTest extends TestCase
 {
-    public function testIsNativeValueError()
+    public function testIsNativeValueError(): void
     {
         $this->assertInstanceOf(\ValueError::class, new ValueError());
     }

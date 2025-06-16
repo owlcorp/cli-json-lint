@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace OwlCorp\CliJsonLint\Tests\DTO;
 
-use OwlCorp\CliJsonLint\DTO\LintResultCollection;
 use OwlCorp\CliJsonLint\DTO\LintResult;
+use OwlCorp\CliJsonLint\DTO\LintResultCollection;
 use PHPUnit\Framework\TestCase;
 use Seld\JsonLint\ParsingException;
 

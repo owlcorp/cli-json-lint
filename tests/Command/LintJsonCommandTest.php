@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace OwlCorp\CliJsonLint\Tests\Command;
 
 use OwlCorp\CliJsonLint\Command\LintJsonCommand;
-use OwlCorp\CliJsonLint\Exception\ValueError;
 use OwlCorp\CliJsonLint\Exception\RuntimeException;
+use OwlCorp\CliJsonLint\Exception\ValueError;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Tester\CommandTester;
 
 final class LintJsonCommandTest extends TestCase
 {
@@ -18,16 +18,16 @@ final class LintJsonCommandTest extends TestCase
     protected function setUp(): void
     {
         // Create isolated temp directory and switch into it
-        $this->tempDir = sys_get_temp_dir() . '/lintjson_' . uniqid();
-        mkdir($this->tempDir, 0777, true);
-        $this->origCwd = getcwd() ?: '.';
-        chdir($this->tempDir);
+        $this->tempDir = \sys_get_temp_dir() . '/lintjson_' . \uniqid();
+        \mkdir($this->tempDir, 0777, true);
+        $this->origCwd = \getcwd() ?: '.';
+        \chdir($this->tempDir);
     }
 
     protected function tearDown(): void
     {
         // Restore cwd and remove temp dir
-        chdir($this->origCwd);
+        \chdir($this->origCwd);
         $this->removeTempDirectory();
     }
 
@@ -35,23 +35,23 @@ final class LintJsonCommandTest extends TestCase
     {
         $dir = $this->tempDir;
         $files = new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
+            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
             \RecursiveIteratorIterator::CHILD_FIRST
         );
         foreach ($files as $fileinfo) {
-        $todo = $fileinfo->isDir() ? 'rmdir' : 'unlink';
+            $todo = $fileinfo->isDir() ? 'rmdir' : 'unlink';
             $todo($fileinfo->getRealPath());
         }
-        rmdir($dir);
+        \rmdir($dir);
     }
 
     private function createJsonFile(string $path, string $content): void
     {
         $full = $this->tempDir . '/' . $path;
-        if (!is_dir(dirname($full))) {
-        mkdir(dirname($full), 0777, true);
+        if (!\is_dir(\dirname($full))) {
+            \mkdir(\dirname($full), 0777, true);
         }
-        file_put_contents($full, $content);
+        \file_put_contents($full, $content);
     }
 
     public function testInvalidFormatThrowsValueError(): void
@@ -160,7 +160,7 @@ final class LintJsonCommandTest extends TestCase
                                          'source' => ['*.{json,js,yaml}'],
                                      ]);
         $this->assertSame(0, $exitJs);
-        $jsonJs = json_decode(trim($tester->getDisplay()), true);
+        $jsonJs = \json_decode(\trim($tester->getDisplay()), true);
         $this->assertCount(1, $jsonJs);
         $this->assertSame('f2.js', $jsonJs[0]['file']);
 
@@ -171,10 +171,10 @@ final class LintJsonCommandTest extends TestCase
                                             'source' => ['*.{json,js,yaml}'],
                                         ]);
         $this->assertSame(0, $exitMulti);
-        $jsonMulti = json_decode(trim($tester->getDisplay()), true);
+        $jsonMulti = \json_decode(\trim($tester->getDisplay()), true);
         $this->assertCount(2, $jsonMulti);
-        $files = array_column($jsonMulti, 'file');
-        sort($files);
+        $files = \array_column($jsonMulti, 'file');
+        \sort($files);
         $this->assertSame(['f1.json', 'f3.yaml'], $files);
     }
 
@@ -191,7 +191,7 @@ final class LintJsonCommandTest extends TestCase
                                    ]);
 
         $this->assertSame(1, $exit);
-        $lines = array_filter(preg_split('/\R/', $tester->getDisplay()));
+        $lines = \array_filter(\preg_split('/\R/', $tester->getDisplay()));
         $this->assertCount(1, $lines);
     }
 
@@ -207,9 +207,9 @@ final class LintJsonCommandTest extends TestCase
                                    ]);
 
         $this->assertSame(0, $exit);
-        $json = json_decode(trim($tester->getDisplay()), true);
+        $json = \json_decode(\trim($tester->getDisplay()), true);
         $this->assertStringStartsWith(
-        realpath($this->tempDir . '/dir/file.json'),
+            \realpath($this->tempDir . '/dir/file.json'),
             $json[0]['file']
         );
     }
