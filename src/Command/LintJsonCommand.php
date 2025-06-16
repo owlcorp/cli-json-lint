@@ -191,16 +191,18 @@ final class LintJsonCommand extends Command
             yield $source => $dirPath;
         }
 
-        if($dirPath->isDir() && $recurseLimit > 0) {
-            /** @var iterable<\SplFileInfo> $iter */
-            $iter = new \FilesystemIterator(
-                $dirPath->getPathname(),
-                \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS |
-                \FilesystemIterator::FOLLOW_SYMLINKS
-            );
-            foreach ($iter as $innerDir) {
-                yield from $this->scanDirectory($source, $innerDir, $recurseLimit - 1, $excludes, $extensions, $seen);
-            }
+        if (!$dirPath->isDir() || $recurseLimit <= 0) {
+            return;
+        }
+
+        /** @var iterable<\SplFileInfo> $iter */
+        $iter = new \FilesystemIterator(
+            $dirPath->getPathname(),
+            \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS |
+            \FilesystemIterator::FOLLOW_SYMLINKS
+        );
+        foreach ($iter as $innerDir) {
+            yield from $this->scanDirectory($source, $innerDir, $recurseLimit - 1, $excludes, $extensions, $seen);
         }
     }
 
